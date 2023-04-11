@@ -22,6 +22,14 @@ glm::mat4 getProjectionMatrix(){
 
 // Initial position : on +Z
 glm::vec3 position = glm::vec3( 0, 0, 5 ); 
+
+glm::vec3* getPosition() {
+	return &position;
+}
+void setPosition(glm::vec3 var) {
+	position = var;
+}
+
 // Initial horizontal angle : toward -Z
 float horizontalAngle = 3.14f;
 // Initial vertical angle : none
@@ -93,11 +101,16 @@ void computeMatricesFromInputs(){
 	// Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
 	ProjectionMatrix = glm::perspective(glm::radians(FoV), 4.0f / 3.0f, 0.1f, 100.0f);
 	// Camera matrix
-	ViewMatrix       = glm::lookAt(
-								position,           // Camera is here
-								position+direction, // and looks here : at the same position, plus "direction"
-								up                  // Head is up (set to 0,-1,0 to look upside-down)
-						   );
+	//ViewMatrix       = glm::lookAt(
+	//							position,           // Camera is here
+	//							position+direction, // and looks here : at the same position, plus "direction"
+	//							up                  // Head is up (set to 0,-1,0 to look upside-down)
+	//					   );
+
+	ViewMatrix = glm::lookAt(position,           // Camera is here
+		glm::vec3(0, 0, 0), //To look always to the cube
+		up                  // Head is up (set to 0,-1,0 to look upside-down)
+	);
 
 	// For the next frame, the "last time" will be "now"
 	lastTime = currentTime;

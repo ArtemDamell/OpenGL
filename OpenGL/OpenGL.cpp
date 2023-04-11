@@ -197,6 +197,9 @@ int main()
 		glm::mat4 ModelMatrix = glm::mat4(1.0);
 		glm::mat4 MVP = ProjectionMatrix * ViewMatrix * ModelMatrix;
 
+		float rotCamera = 0.0f;
+		glm::vec3 origPos = *getPosition();
+
 		// Send our transformation to the currently bound shader, 
 		// in the "MVP" uniform
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP[0][0]);
@@ -240,6 +243,13 @@ int main()
 		// Swap buffers
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		//To rotate the camera through the object
+		if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
+			rotCamera += 0.01f;
+			glm::vec3 rot(cos(rotCamera) * 10.0 - origPos.x, 0, sin(rotCamera) * 10.0 - origPos.z);
+			setPosition(origPos + rot);
+		}
 
 	} // Check if the ESC key was pressed or the window was closed
 	while (glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
